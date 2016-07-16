@@ -4,7 +4,7 @@
 1. amazonの注文履歴を開きます https://www.amazon.co.jp/gp/css/order-history/
 1. F12を押します
 1. Consoleタブを開きます
-1. ソース(https://raw.githubusercontent.com/yociya/test/master/amazon-history.js)をすべてコピーしてConsoleに貼り付けます
+1. [ソース](https://raw.githubusercontent.com/yociya/test/master/amazon-history.js) をすべてコピーしてConsoleに貼り付けます
 
 `````
 結果サンプル
