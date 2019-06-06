@@ -21,10 +21,17 @@ function autoInput(){
         return;
     }
 
-    if($('font[size="+1"]').text() != "勤務実績入力"){
-        return;
+    if($('font[size="+1"]').text() == "勤務実績入力"){
+        autoInputGetsuji();
     }
 
+    if($('font[size="+1"]').text() == "勤務実績入力（日次用）"){
+        autoInputNichiji();
+    }
+
+}
+
+function autoInputGetsuji(){
     $('#APPROVALGRD').find('tr').each(
         function (idx, row) {
             var $row = $(row);
@@ -64,5 +71,39 @@ function autoInput(){
                 }
             );
         }
-    )
+    );
+}
+function autoInputNichiji(){
+    var shour = -1;
+    var smin = -1;
+    var ehour = -1;
+    var emin = -1;
+    $('#KNM').find('td.kinmu_normal').each(
+        function (idx, col) {
+            var $col = $(col);
+            if (idx == 2) {
+                var lst = $col.find('span');
+                if (lst.length >= 3) {
+                    shour = $(lst[1]).text();
+                    smin = $(lst[2]).text();
+                }
+                if (lst.length >= 6) {
+                    ehour = $(lst[4]).text();
+                    emin = $(lst[5]).text();
+                }
+            }
+        }
+    );
+    if (shour >= 0) {
+        $('#KNMTMRNGSTH').val(shour);
+    }
+    if (smin >= 0) {
+        $('#KNMTMRNGSTM').val(smin);
+    }
+    if (ehour >= 0) {
+        $('#KNMTMRNGETH').val(ehour);
+    }
+    if (emin >= 0) {
+        $('#KNMTMRNGETM').val(emin);
+    }
 }
