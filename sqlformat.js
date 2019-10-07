@@ -16,7 +16,14 @@ function format(sql){
     var result = sql;
     result = result.replace(/\n/g,' ');
     result = result.replace(/ +/g,' ');
-    result = result.replace(/select /g,'SELECT ');
+    result = result.replace(/select /ig,'SELECT ');
+    result = result.replace(/from /ig,'FROM ');
+    result = result.replace(/where /ig,'WHERE ');
+    result = result.replace(/order /ig,'ORDER ');
+    result = result.replace(/by /ig,'BY ');
+    result = result.replace(/and /ig,'AND ');
+    result = result.replace(/or /ig,'OR ');
+    
     result = result.replace(/AND\(/g,'AND (');
     result = result.replace(/OR\(/g,'OR (');
 
