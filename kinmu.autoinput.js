@@ -56,10 +56,10 @@ function autoInputGetsuji(){
                     if (colidx == 8) {
                         var inputs = $col.find('input');
                         if (shour >= 0 && smin >= 0) {
-                            $(inputs[2]).val(shour);
+                            $(inputs[2]).val(shour + ':' + smin);
                         }
                         if (ehour >= 0 && emin >= 0) {
-                            $(inputs[5]).val(ehour);
+                            $(inputs[5]).val(ehour + ':' + emin);
                         }
                     }
                 }
