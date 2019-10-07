@@ -28,6 +28,7 @@ function format(sql) {
 
     result = result.replace(/to_number\(/ig, 'TO_NUMBER(');
     result = result.replace(/get_val\(/ig, 'GET_VAL(');
+    result = result.replace(/count\(/ig, 'COUNT(');
 
     result = result.replace(/AND\(/g, 'AND (');
     result = result.replace(/OR\(/g, 'OR (');
