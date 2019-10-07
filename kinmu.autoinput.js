@@ -55,17 +55,11 @@ function autoInputGetsuji(){
                     }
                     if (colidx == 8) {
                         var inputs = $col.find('input');
-                        if (shour >= 0) {
-                            $(inputs[0]).val(shour);
+                        if (shour >= 0 && smin >= 0) {
+                            $(inputs[2]).val(shour);
                         }
-                        if (smin >= 0) {
-                            $(inputs[1]).val(smin);
-                        }
-                        if (ehour >= 0) {
-                            $(inputs[2]).val(ehour);
-                        }
-                        if (emin >= 0) {
-                            $(inputs[3]).val(emin);
+                        if (ehour >= 0 && emin >= 0) {
+                            $(inputs[5]).val(ehour);
                         }
                     }
                 }
@@ -100,10 +94,16 @@ function autoInputNichiji(){
     if (smin >= 0) {
         $('#KNMTMRNGSTM').val(smin);
     }
+    if (shour >= 0 && smin >= 0) {
+        $('[name=KNMTMRNGSTDI]').val(shour + ':' + smin);
+    }
     if (ehour >= 0) {
         $('#KNMTMRNGETH').val(ehour);
     }
     if (emin >= 0) {
         $('#KNMTMRNGETM').val(emin);
+    }
+    if (ehour >= 0 && emin >= 0) {
+        $('[name=KNMTMRNGETDI]').val(ehour + ':' + emin);
     }
 }
