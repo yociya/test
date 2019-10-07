@@ -16,6 +16,7 @@ function format(sql) {
     var result = sql;
     result = result.replace(/\n/g, ' ');
     result = result.replace(/ +/g, ' ');
+    result = result.replace(/ ?, ?/g, ',');
     result = result.replace(/select /ig, 'SELECT ');
     result = result.replace(/distinct /ig, 'DISTINCT ');
     result = result.replace(/from /ig, 'FROM ');
@@ -33,7 +34,7 @@ function format(sql) {
 
     result = result.replace(/SELECT /g, 'SELECT\n      ');
     result = result.replace(/SELECT\n      DISTINCT /g, 'SELECT DISTINCT\n      ');
-    result = result.replace(/FROM /g, '\n  FROM\n       ');
+    result = result.replace(/FROM /g, '\n  FROM\n      ');
     result = result.replace(/WHERE /g, '\n WHERE\n       ');
     result = result.replace(/AND /g, '\n   AND ');
     result = result.replace(/OR /g, '\n    OR ');
