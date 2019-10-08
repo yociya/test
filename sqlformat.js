@@ -79,7 +79,7 @@ function format(sql) {
         var newsql = cutReplace(target, /,/g, '\n     ,', fromstart, wherestart);
         newsql = bracketsOpen(newsql, fromstart, wherestart);
         var nextindex = newsql.indexOf(af);
-        if (wherestart == target.length) {
+        if (wherestart == target.length || target.length == newsql.length) {
             return newsql;
         }
         return from(newsql, nextindex);
@@ -104,7 +104,11 @@ function format(sql) {
 
     function cutReplace(target, search, reptext, st, en) {
         var rep = target.substring(st, en);
+        var replen = rep.length;
         rep = rep.replace(search, reptext);
+        if (rep.length == replen) {
+            return target;
+        }
         var bf = target.substring(0, st);
         var af = target.substring(en, target.length);
         var newsql = bf + rep + af;
