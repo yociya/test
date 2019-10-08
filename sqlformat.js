@@ -17,24 +17,47 @@ function format(sql) {
     result = result.replace(/\n/g, ' ');
     result = result.replace(/ +/g, ' ');
     result = result.replace(/ ?, ?/g, ',');
+    result = result.replace(/ ?= ?/g, '=');
+    result = result.replace(/ ?!= ?/g, '!=');
+    result = result.replace(/ ?<> ?/g, '<>');
+    result = result.replace(/ ?<= ?/g, '<=');
+    result = result.replace(/ ?>= ?/g, '>=');
+    result = result.replace(/ ?< ?/g, '<');
+    result = result.replace(/ ?> ?/g, '>');
+
     result = result.replace(/select /ig, 'SELECT ');
     result = result.replace(/distinct /ig, 'DISTINCT ');
     result = result.replace(/from /ig, 'FROM ');
     result = result.replace(/where /ig, 'WHERE ');
     result = result.replace(/order /ig, 'ORDER ');
-    result = result.replace(/by /ig, 'BY ');
-    result = result.replace(/and /ig, 'AND ');
-    result = result.replace(/or /ig, 'OR ');
+    result = result.replace(/ by /ig, ' BY ');
+    result = result.replace(/ and /ig, ' AND ');
+    result = result.replace(/ or /ig, ' OR ');
+    result = result.replace(/ not /ig, ' NOT ');
+    result = result.replace(/ in /ig, ' IN ');
 
+    result = result.replace(/to_char\(/ig, 'TO_CHAR(');
     result = result.replace(/to_number\(/ig, 'TO_NUMBER(');
+    result = result.replace(/to_date\(/ig, 'TO_DATE(');
+
     result = result.replace(/get_val\(/ig, 'GET_VAL(');
     result = result.replace(/count\(/ig, 'COUNT(');
 
-    result = result.replace(/AND\(/g, 'AND (');
-    result = result.replace(/OR\(/g, 'OR (');
+    result = result.replace(/and\(/ig, 'AND (');
+    result = result.replace(/or\(/ig, 'OR (');
 
-    result = result.replace(/SELECT /g, 'SELECT\n      ');
-    result = result.replace(/SELECT\n      DISTINCT /g, 'SELECT DISTINCT\n      ');
+    result = result.replace(/companycom\./ig, 'COMPANYCOM.');
+
+    result = result.replace(/=/g, ' = ');
+    result = result.replace(/!=/g, ' != ');
+    result = result.replace(/<>/g, ' <> ');
+    result = result.replace(/</g, ' < ');
+    result = result.replace(/>/g, ' > ');
+    result = result.replace(/ <  = /g, ' <= ');
+    result = result.replace(/ >  = /g, ' >= ');
+
+    result = result.replace(/SELECT /g, 'SELECT \n      ');
+    result = result.replace(/SELECT \n      DISTINCT /g, 'SELECT DISTINCT\n      ');
     result = result.replace(/FROM /g, '\n  FROM\n      ');
     result = result.replace(/WHERE /g, '\n WHERE\n       ');
     result = result.replace(/AND /g, '\n   AND ');
@@ -50,12 +73,15 @@ function format(sql) {
         }
         var selectstart = target.indexOf('SELECT ', index);
         if (selectstart < 0) {
+            console.log('selectstart < 0');
             return target;
         }
         var fromstart = searchOpenClose(target, selectstart, /SELECT /g, ' FROM\n');
         var af = target.substring(fromstart, target.length);
         var newsql = cutReplace(target, /,/g, '\n     ,', selectstart, fromstart);
+        console.log('replaces:' + newsql);
         newsql = bracketsOpen(newsql, selectstart, fromstart);
+        console.log('brackets:' + newsql);
         var nextindex = newsql.indexOf(af);
         return select(newsql, nextindex);
     }
@@ -104,9 +130,9 @@ function format(sql) {
 
     function cutReplace(target, search, reptext, st, en) {
         var rep = target.substring(st, en);
-        var replen = rep.length;
+        var bfrep = rep;
         rep = rep.replace(search, reptext);
-        if (rep.length == replen) {
+        if (rep == bfrep) {
             return target;
         }
         var bf = target.substring(0, st);
