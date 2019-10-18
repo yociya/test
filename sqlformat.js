@@ -56,9 +56,9 @@ function format(sql) {
     result = result.replace(/ <  = /g, ' <= ');
     result = result.replace(/ >  = /g, ' >= ');
 
-    result = result.replace(/SELECT /g, 'SELECT \n      ');
-    result = result.replace(/SELECT \n      DISTINCT /g, 'SELECT DISTINCT\n      ');
-    result = result.replace(/FROM /g, '\n  FROM\n      ');
+    result = result.replace(/SELECT /g, 'SELECT \n       ');
+    result = result.replace(/SELECT \n      DISTINCT /g, 'SELECT DISTINCT\n       ');
+    result = result.replace(/FROM /g, '\n  FROM\n       ');
     result = result.replace(/WHERE /g, '\n WHERE\n       ');
     result = result.replace(/AND /g, '\n   AND ');
     result = result.replace(/OR /g, '\n    OR ');
@@ -78,7 +78,7 @@ function format(sql) {
         }
         var fromstart = searchOpenClose(target, selectstart, /SELECT /g, ' FROM\n');
         var af = target.substring(fromstart, target.length);
-        var newsql = cutReplace(target, /,/g, '\n     ,', selectstart, fromstart);
+        var newsql = cutReplace(target, /,/g, '\n      ,', selectstart, fromstart);
         console.log('replaces:' + newsql);
         newsql = bracketsOpen(newsql, selectstart, fromstart);
         console.log('brackets:' + newsql);
@@ -102,7 +102,7 @@ function format(sql) {
             }
         }
         var af = target.substring(wherestart, target.length);
-        var newsql = cutReplace(target, /,/g, '\n     ,', fromstart, wherestart);
+        var newsql = cutReplace(target, /,/g, '\n      ,', fromstart, wherestart);
         newsql = bracketsOpen(newsql, fromstart, wherestart);
         var nextindex = newsql.indexOf(af);
         if (wherestart == target.length || target.length == newsql.length) {
@@ -117,12 +117,12 @@ function format(sql) {
             return s;
         }
         var closeindex = searchOpenClose(s, openindex, /\(/g, ')');
-        var commaindex = s.indexOf('\n     ,');
+        var commaindex = s.indexOf('\n      ,');
         if (commaindex < 0) {
             return s;
         }
         if (closeindex > commaindex) {
-            var news = cutReplace(s, /\n     ,/g, ',', openindex, closeindex);
+            var news = cutReplace(s, /\n      ,/g, ',', openindex, closeindex);
             return bracketsOpen(news, closeindex + 1, endindex);
         }
         return bracketsOpen(s, closeindex + 1, endindex);
