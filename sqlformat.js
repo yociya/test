@@ -43,6 +43,7 @@ function format(sql) {
     result = result.replace(/get_val\(/ig, 'GET_VAL(');
     result = result.replace(/count\(/ig, 'COUNT(');
 
+    result = result.replace(/where\(/ig, 'WHERE (');
     result = result.replace(/and\(/ig, 'AND (');
     result = result.replace(/or\(/ig, 'OR (');
 
@@ -77,11 +78,15 @@ function format(sql) {
             return target;
         }
         var fromstart = searchOpenClose(target, selectstart, /SELECT /g, ' FROM\n');
+        if (fromstart < 0) {
+            fromstart = target.length;
+        }
         var af = target.substring(fromstart, target.length);
         var newsql = cutReplace(target, /,/g, '\n      ,', selectstart, fromstart);
-        console.log('replaces:' + newsql);
         newsql = bracketsOpen(newsql, selectstart, fromstart);
-        console.log('brackets:' + newsql);
+        if (af.length == 0) {
+            return newsql;
+        }
         var nextindex = newsql.indexOf(af);
         return select(newsql, nextindex);
     }
@@ -92,6 +97,7 @@ function format(sql) {
         }
         var fromstart = target.indexOf(' FROM\n', index);
         if (fromstart < 0) {
+            console.log('fromstart < 0');
             return target;
         }
         var wherestart = searchOpenClose(target, fromstart, / FROM\n/g, ' WHERE\n');
@@ -102,6 +108,7 @@ function format(sql) {
             }
         }
         var af = target.substring(wherestart, target.length);
+        console.log('wherestart:' + wherestart);
         var newsql = cutReplace(target, /,/g, '\n      ,', fromstart, wherestart);
         newsql = bracketsOpen(newsql, fromstart, wherestart);
         var nextindex = newsql.indexOf(af);
@@ -116,16 +123,32 @@ function format(sql) {
         if (openindex < 0 || endindex < openindex) {
             return s;
         }
-        var closeindex = searchOpenClose(s, openindex, /\(/g, ')');
-        var commaindex = s.indexOf('\n      ,');
-        if (commaindex < 0) {
-            return s;
+        var sql = s.substring(0, openindex);
+        var target = s.substring(openindex, s.length);
+        var count = 0;
+        while (true) {
+            var closeindex = searchOpenClose(target, 1, '(', ')');
+            console.log('closeindex:' + closeindex);
+            var rep = target.substring(0, closeindex + 1);
+            var af = target.substring(closeindex + 1, target.length);
+            console.log(rep);
+            var news = rep.replace(/\n      ,/g, ',');
+            sql += news;
+            openindex = af.indexOf('(', 0);
+            console.log(openindex);
+            if (openindex < 0) {
+                break;
+            }
+            var bf = af.substring(0, openindex);
+            sql += bf;
+            target = af.substring(openindex, af.length);
+            count++;
+            if (count == 1000) {
+                break;
+            }
         }
-        if (closeindex > commaindex) {
-            var news = cutReplace(s, /\n      ,/g, ',', openindex, closeindex);
-            return bracketsOpen(news, closeindex + 1, endindex);
-        }
-        return bracketsOpen(s, closeindex + 1, endindex);
+        sql += af;
+        return sql;
     }
 
     function cutReplace(target, search, reptext, st, en) {
@@ -143,13 +166,12 @@ function format(sql) {
 
     function searchOpenClose(s, openindex, opentag, closetag) {
         var closeindex = s.indexOf(closetag, openindex);
-        var ss = s.substring(openindex + 1, closeindex);
-        var ar = ss.match(opentag);
-        if (ar == null) {
-            return closeindex;
-        } else {
-            for (var i = 0; i < ar.length; i++) {
+        var opennextindex = s.indexOf(opentag, openindex + 1);
+        while (true) {
+            if (opennextindex != -1 && closeindex > opennextindex) {
                 closeindex = s.indexOf(closetag, closeindex + 1);
+                opennextindex = s.indexOf(opentag, opennextindex + 1);
+                continue;
             }
             return closeindex;
         }
