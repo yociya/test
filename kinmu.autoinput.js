@@ -105,4 +105,5 @@ function autoInputNichiji(){
     if (ehour >= 0 && emin >= 0) {
         document.querySelector('[name=KNMTMRNGETDI]').value = ehour + ':' + emin;
     }
+    document.querySelector('#btnCalc0').click();
 }
