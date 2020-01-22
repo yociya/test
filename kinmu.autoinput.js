@@ -17,51 +17,48 @@ function findElementForWait(){
 }
 
 function autoInput(){
-    if ($ === undefined) {
-        return;
-    }
-
-    if($('font[size="+1"]').text() == "勤務実績入力"){
+    if(document.querySelector('font[size="+1"]').textContent == "勤務実績入力"){
         autoInputGetsuji();
     }
 
-    if($('font[size="+1"]').text() == "勤務実績入力（日次用）"){
+    if(document.querySelector('font[size="+1"]').textContent == "勤務実績入力（日次用）"){
         autoInputNichiji();
     }
 
 }
 
 function autoInputGetsuji(){
-    $('#APPROVALGRD').find('tr').each(
-        function (idx, row) {
-            var $row = $(row);
+    var $grid = document.querySelector('#APPROVALGRD');
+    $grid.querySelectorAll('tr').forEach(
+        function ($row) {
             var shour = -1;
             var smin = -1;
             var ehour = -1;
             var emin = -1;
-            $row.find('td.mg_normal').each(
-                function (colidx, col) {
-                    var $col = $(col);
+            var colidx = 0
+            $row.querySelectorAll('td.mg_normal').forEach(
+                function ($col) {
                     if (colidx == 7) {
-                        var lst = $col.find('span');
+                        var lst = $col.querySelectorAll('span');
                         if (lst.length >= 3) {
-                            shour = $(lst[1]).text();
-                            smin = $(lst[2]).text();
+                            shour = lst[1].textContent;
+                            smin = lst[2].textContent;
                         }
                         if (lst.length >= 6) {
-                            ehour = $(lst[4]).text();
-                            emin = $(lst[5]).text();
+                            ehour = lst[4].textContent;
+                            emin = lst[5].textContent;
                         }
                     }
                     if (colidx == 8) {
-                        var inputs = $col.find('input');
+                        var inputs = $col.querySelectorAll('input');
                         if (shour >= 0 && smin >= 0) {
-                            $(inputs[2]).val(shour + ':' + smin);
+                            inputs[2].value = shour + ':' + smin;
                         }
                         if (ehour >= 0 && emin >= 0) {
-                            $(inputs[5]).val(ehour + ':' + emin);
+                            inputs[5].value = ehour + ':' + emin;
                         }
                     }
+                    colidx += 1;
                 }
             );
         }
@@ -72,38 +69,40 @@ function autoInputNichiji(){
     var smin = -1;
     var ehour = -1;
     var emin = -1;
-    $('#KNM').find('td.kinmu_normal').each(
-        function (idx, col) {
-            var $col = $(col);
+    var $grid = document.querySelector('#KNM');
+    var idx = 0;
+    $grid.querySelectorAll('td.kinmu_normal').forEach(
+        function ($col) {
             if (idx == 2) {
-                var lst = $col.find('span');
+                var lst = $col.querySelectorAll('span');
                 if (lst.length >= 3) {
-                    shour = $(lst[1]).text();
-                    smin = $(lst[2]).text();
+                    shour = lst[1].textContent;
+                    smin = lst[2].textContent;
                 }
                 if (lst.length >= 6) {
-                    ehour = $(lst[4]).text();
-                    emin = $(lst[5]).text();
+                    ehour = lst[4].textContent;
+                    emin = lst[5].textContent;
                 }
             }
+            idx += 1;
         }
     );
     if (shour >= 0) {
-        $('#KNMTMRNGSTH').val(shour);
+        document.querySelector('#KNMTMRNGSTH').value = shour;
     }
     if (smin >= 0) {
-        $('#KNMTMRNGSTM').val(smin);
+        document.querySelector('#KNMTMRNGSTM').value = smin;
     }
     if (shour >= 0 && smin >= 0) {
-        $('[name=KNMTMRNGSTDI]').val(shour + ':' + smin);
+        document.querySelector('[name=KNMTMRNGSTDI]').value = shour + ':' + smin;
     }
     if (ehour >= 0) {
-        $('#KNMTMRNGETH').val(ehour);
+        document.querySelector('#KNMTMRNGETH').value = ehour;
     }
     if (emin >= 0) {
-        $('#KNMTMRNGETM').val(emin);
+        document.querySelector('#KNMTMRNGETM').value = emin;
     }
     if (ehour >= 0 && emin >= 0) {
-        $('[name=KNMTMRNGETDI]').val(ehour + ':' + emin);
+        document.querySelector('[name=KNMTMRNGETDI]').value = ehour + ':' + emin;
     }
 }
