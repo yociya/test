@@ -89,15 +89,9 @@ function autoInputNichiji(){
     );
     var update = false;
     if (shour >= 0) {
-        if(document.querySelector('#KNMTMRNGSTH').value != shour) {
-            update = true;
-        }
         document.querySelector('#KNMTMRNGSTH').value = shour;
     }
     if (smin >= 0) {
-        if(document.querySelector('#KNMTMRNGSTM').value != smin) {
-            update = true;
-        }
         document.querySelector('#KNMTMRNGSTM').value = smin;
     }
     if (shour >= 0 && smin >= 0) {
@@ -107,15 +101,9 @@ function autoInputNichiji(){
         document.querySelector('[name=KNMTMRNGSTDI]').value = shour + ':' + smin;
     }
     if (ehour >= 0) {
-        if(document.querySelector('#KNMTMRNGETH').value != ehour) {
-            update = true;
-        }
         document.querySelector('#KNMTMRNGETH').value = ehour;
     }
     if (emin >= 0) {
-        if(document.querySelector('#KNMTMRNGETM').value != emin) {
-            update = true;
-        }
         document.querySelector('#KNMTMRNGETM').value = emin;
     }
     if (ehour >= 0 && emin >= 0) {
