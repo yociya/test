@@ -95,7 +95,9 @@ function autoInputNichiji(){
         document.querySelector('#KNMTMRNGSTM').value = smin;
     }
     if (shour >= 0 && smin >= 0) {
-        if(document.querySelector('[name=KNMTMRNGSTDI]').value != shour + ':' + smin) {
+        var shnum = parseInt(shour);
+        var smnum = parseInt(smin);
+        if(document.querySelector('[name=KNMTMRNGSTDI]').value != shnum + ':' + smnum) {
             update = true;
         }
         document.querySelector('[name=KNMTMRNGSTDI]').value = shour + ':' + smin;
@@ -107,7 +109,9 @@ function autoInputNichiji(){
         document.querySelector('#KNMTMRNGETM').value = emin;
     }
     if (ehour >= 0 && emin >= 0) {
-        if(document.querySelector('[name=KNMTMRNGETDI]').value != ehour + ':' + emin) {
+        var ehnum = parseInt(ehour);
+        var emnum = parseInt(emin);
+        if(document.querySelector('[name=KNMTMRNGETDI]').value != ehnum + ':' + emnum) {
             update = true;
         }
         document.querySelector('[name=KNMTMRNGETDI]').value = ehour + ':' + emin;
