@@ -17,14 +17,16 @@ function findElementForWait(){
 }
 
 function autoInput(){
-    if(document.querySelector('font[size="+1"]').textContent == "勤務実績入力"){
-        autoInputGetsuji();
-    }
-
-    if(document.querySelector('font[size="+1"]').textContent == "勤務実績入力（日次用）"){
-        autoInputNichiji();
-    }
-
+    document.querySelectorAll('a').forEach(
+        function(a){
+            if (a.textContent == "勤務実績入力"){
+                autoInputGetsuji();
+            }
+            if (a.textContent == "勤務実績入力（日次用）"){
+                autoInputNichiji();
+            }
+        }
+    )
 }
 
 function autoInputGetsuji(){
