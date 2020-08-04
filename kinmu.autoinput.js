@@ -127,4 +127,5 @@ function autoInputNichiji(){
     if (update) {
         document.querySelector('#btnCalc0').click();
     }
+    document.querySelector('select[name="GI_COMBOBOX38_Seq0S"]').value = 2
 }
